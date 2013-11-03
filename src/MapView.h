@@ -28,17 +28,17 @@ class MapView : public Observer
 
     private:
         // Constant configurations
-        const int SCREEN_WIDTH = 800;
-        const int SCREEN_HEIGHT = 600;
-        const std::string WINDOW_NAME = "Assignment 2 - Observer Pattern on Map";
+        static const int SCREEN_WIDTH = 800;
+        static const int SCREEN_HEIGHT = 600;
+        std::string WINDOW_NAME;
 
         int screenWidth;
         int screenHeight;
 
         SDL_Renderer * renderer;
         SDL_Window * window;
-        TextureRenderer textures;
-        TextRenderer texts;
+        //TextureRenderer textures;
+        //TextRenderer texts;
 };
 
 #endif /* MAPVIEW_H_ */

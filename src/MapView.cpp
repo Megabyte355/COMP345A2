@@ -11,6 +11,7 @@ MapView::MapView()
 {
     screenWidth = SCREEN_WIDTH;
     screenHeight = SCREEN_HEIGHT;
+    WINDOW_NAME = "Assignment 2 - Observer Pattern on Map";
     renderer = nullptr;
     window = nullptr;
 }
@@ -56,10 +57,10 @@ bool MapView::initialize()
         std::cout << "SDL_CreateRenderer error." << std::endl;
         return false;
     }
-    textures.setRenderer(renderer);
-    textures.loadAllTextures();
-    texts.setRenderer(renderer);
-    texts.loadFontPaths();
+    //textures.setRenderer(renderer);
+    //textures.loadAllTextures();
+    //texts.setRenderer(renderer);
+    //texts.loadFontPaths();
 
     std::cout << "MapView initialization complete!" << std::endl;
     return true;

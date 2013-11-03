@@ -50,7 +50,5 @@ int main(int argc, char** argv)
 //    m.printMap();
 //    cout << m.validateMap() << endl;
 
-
-
     return 0;
 }
