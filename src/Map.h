@@ -9,6 +9,9 @@
 #define MAP_H_
 
 #include "Cell.h"
+#include "PathFinder.h"
+#include <vector>
+#include <iostream>
 
 class Map
 {
@@ -16,7 +19,7 @@ class Map
         Map();
         ~Map();
 
-        void initialize(int,int);
+        void initialize(int, int);
 
         // Map properties
         int getWidth();
@@ -35,7 +38,15 @@ class Map
         bool isValidPath(Cell, Cell);
         bool isValidCell(Cell);
         bool isValidCell(int, int);
+        bool isValidCell(CellLocation);
+        bool isOccupiable(CellLocation);
 
-};
+        void printMap();
+    private:
+        std::vector<std::vector<std::shared_ptr<Cell>>>matrix;
+        int mapWidth;
+        int mapHeight;
+
+    };
 
 #endif /* MAP_H_ */

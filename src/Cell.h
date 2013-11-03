@@ -9,6 +9,7 @@
 #define CELL_H_
 
 #include "CellOccupant.h"
+#include "CellLocation.h"
 #include <memory>
 
 class Cell
@@ -19,17 +20,29 @@ class Cell
             Wall, Surface, Empty, Start, End
         };
 
-        Cell();
-        Cell(CellType);
-        virtual ~Cell();
+        // Constructors
+        Cell(int, int);
+        Cell(CellType, int, int);
+        ~Cell();
 
+        // Getters and Setters
+        int getX();
+        int getY();
+        void setX(int);
+        void setY(int);
         CellType getType();
         void setType(CellType);
-        void clearOccupant();
-        void setOccupant(std::shared_ptr<CellOccupant>);
         std::shared_ptr<CellOccupant> getOccupant();
+        void setOccupant(std::shared_ptr<CellOccupant>);
+        CellLocation getLocation();
+
+        // Operations
+        void clearOccupant();
+        std::vector<CellLocation> getNeighbors();
+        bool isOccupiable();
 
     private:
+        CellLocation location;
         CellType type;
         std::shared_ptr<CellOccupant> occupant;
 };
