@@ -67,8 +67,7 @@ std::vector<CellLocation> PathFinder::getShortestPath(Map &map, Cell &origin, Ce
     }
 }
 
-
-bool PathFinder::vectorContains(std::vector<PathUnit> list, PathUnit target)
+bool PathFinder::vectorContains(const std::vector<PathUnit> &list, PathUnit &target)
 {
     for (auto unit : list)
     {
@@ -80,7 +79,8 @@ bool PathFinder::vectorContains(std::vector<PathUnit> list, PathUnit target)
     return false;
 }
 
-std::vector<PathUnit> PathFinder::filterPath(std::vector<PathUnit> &list, Cell &origin, Cell &dest, int destinationDepth)
+std::vector<PathUnit> PathFinder::filterPath(std::vector<PathUnit> &list, Cell &origin, Cell &dest,
+        int destinationDepth)
 {
     int targetDepth = destinationDepth - 1;
     bool done = false;

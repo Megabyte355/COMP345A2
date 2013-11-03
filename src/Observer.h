@@ -8,13 +8,17 @@
 #ifndef IOBSERVER_H_
 #define IOBSERVER_H_
 
-class IObserver
+class Observer
 {
     public:
-        IObserver() {}
-        virtual ~IObserver() {};
-
+        Observer();
+        virtual ~Observer();
         virtual void update() = 0;
+
+        long getSubscriberID();
+    private:
+        long observerID;
+        static long observerIDtracker;
 };
 
 #endif /* IOBSERVER_H_ */

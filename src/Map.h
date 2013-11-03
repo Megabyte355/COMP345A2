@@ -10,10 +10,11 @@
 
 #include "Cell.h"
 #include "PathFinder.h"
+#include "Observable.h"
 #include <vector>
 #include <iostream>
 
-class Map
+class Map: public Observable
 {
     public:
         Map();
@@ -34,19 +35,32 @@ class Map
         void setEndCell(int, int);
 
         // Validations
-        bool isValidMap();
-        bool isValidPath(Cell, Cell);
+        bool validateMap();
         bool isValidCell(Cell);
         bool isValidCell(int, int);
         bool isValidCell(CellLocation);
         bool isOccupiable(CellLocation);
+        bool isValidPath(Cell, Cell);
+
+        // Path calculation
+        std::vector<CellLocation> getShortestPath(Cell&, Cell&);
+
+        // IObservable functions
+        void attach(std::shared_ptr<Observer>) override;
+        void detach(std::shared_ptr<Observer>) override;
+        void notify() override;
 
         void printMap();
+
     private:
+        // Map variables
+        std::vector<CellLocation> shortestPath;
         std::vector<std::vector<std::shared_ptr<Cell>>>matrix;
         int mapWidth;
         int mapHeight;
 
+        // IObserver variables
+        std::vector<std::shared_ptr<Observer>> observers;
     };
 
 #endif /* MAP_H_ */

@@ -29,6 +29,8 @@ void Map::initialize(int width, int height)
             matrix[i][j] = std::make_shared<Cell>(i, j);
         }
     }
+
+    notify();
 }
 
 int Map::getWidth()
@@ -90,6 +92,7 @@ void Map::setCell(Cell::CellType cellType, int x, int y)
         matrix[x][y]->setY(y);
     }
 
+    notify();
 }
 
 void Map::setStartCell(int x, int y)
@@ -104,6 +107,8 @@ void Map::setStartCell(int x, int y)
         matrix[x][y] = std::make_shared<Cell>(Cell::CellType::Start, x, y);
         matrix[x][y]->setX(x);
         matrix[x][y]->setY(y);
+
+        notify();
     }
 }
 
@@ -119,10 +124,12 @@ void Map::setEndCell(int x, int y)
         matrix[x][y] = std::make_shared<Cell>(Cell::CellType::End, x, y);
         matrix[x][y]->setX(x);
         matrix[x][y]->setY(y);
+
+        notify();
     }
 }
 
-bool Map::isValidMap()
+bool Map::validateMap()
 {
     /*
      * A map is considered valid if it satisfies 3 conditions:
@@ -139,15 +146,20 @@ bool Map::isValidMap()
 
     if (hasStart && hasEnd)
     {
-        hasValidPath = isValidPath(*start, *end);
+        shortestPath = PathFinder::getShortestPath(*this, *start, *end);
+        hasValidPath = !(shortestPath.empty());
     }
     return hasStart && hasEnd && hasValidPath;
-
 }
 
 bool Map::isValidPath(Cell origin, Cell dest)
 {
-    return !PathFinder::getShortestPath(*this,origin,dest).empty();
+    return !PathFinder::getShortestPath(*this, origin, dest).empty();
+}
+
+std::vector<CellLocation> Map::getShortestPath(Cell &origin, Cell &dest)
+{
+    return PathFinder::getShortestPath(*this, origin, dest);
 }
 
 bool Map::isValidCell(Cell c)
@@ -230,5 +242,30 @@ void Map::printMap()
             }
         }
         std::cout << std::endl;
+    }
+}
+
+void Map::attach(std::shared_ptr<Observer> obs)
+{
+    observers.push_back(obs);
+}
+
+void Map::detach(std::shared_ptr<Observer> obs)
+{
+    for (std::vector<std::shared_ptr<Observer>>::iterator it = observers.begin(); it != observers.end(); it++)
+    {
+        if((*it)->getSubscriberID() == obs->getSubscriberID())
+        {
+            observers.erase(it);
+            break;
+        }
+    }
+}
+
+void Map::notify()
+{
+    for (std::vector<std::shared_ptr<Observer>>::iterator it = observers.begin(); it != observers.end(); it++)
+    {
+        (*it)->update();
     }
 }

@@ -23,8 +23,8 @@ class PathFinder
 
         static std::vector<CellLocation> getShortestPath(Map &map, Cell &origin, Cell &dest);
     private:
-        static bool vectorContains(std::vector<PathUnit>, PathUnit);
-        static std::vector<PathUnit> filterPath(std::vector<PathUnit> &list, Cell &origin, Cell &dest, int estinationDepth);
+        static bool vectorContains(const std::vector<PathUnit>&, PathUnit&);
+        static std::vector<PathUnit> filterPath(std::vector<PathUnit>&, Cell&, Cell&, int estinationDepth);
         static std::vector<CellLocation> convertPathUnitsToCellLocations(std::vector<PathUnit> &list);
 
 };

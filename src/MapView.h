@@ -8,10 +8,10 @@
 #ifndef MAPVIEW_H_
 #define MAPVIEW_H_
 
-#include "IObserver.h"
+#include "Observer.h"
 #include <iostream>
 
-class MapView : public IObserver
+class MapView : public Observer
 {
     public:
         MapView();
