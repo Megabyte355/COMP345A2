@@ -46,20 +46,12 @@ class Map: public Observable
         // Path calculation
         std::vector<CellLocation> getShortestPath(Cell&, Cell&);
 
-        // IObservable functions
-        void attach(std::shared_ptr<Observer>) override;
-        void detach(std::shared_ptr<Observer>) override;
-        void notify() override;
-
     private:
         // Map variables
         std::vector<CellLocation> shortestPath;
         std::vector<std::vector<std::shared_ptr<Cell>>>matrix;
         int mapWidth;
         int mapHeight;
-
-        // IObserver variables
-        std::vector<std::shared_ptr<Observer>> observers;
     };
 
 #endif /* MAP_H_ */

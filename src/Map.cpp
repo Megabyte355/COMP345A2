@@ -186,27 +186,4 @@ bool Map::isOccupiable(CellLocation loc)
     return temp != nullptr && temp->isOccupiable();
 }
 
-void Map::attach(std::shared_ptr<Observer> obs)
-{
-    observers.push_back(obs);
-}
 
-void Map::detach(std::shared_ptr<Observer> obs)
-{
-    for (std::vector<std::shared_ptr<Observer>>::iterator it = observers.begin(); it != observers.end(); it++)
-    {
-        if ((*it)->getSubscriberID() == obs->getSubscriberID())
-        {
-            observers.erase(it);
-            break;
-        }
-    }
-}
-
-void Map::notify()
-{
-    for (std::vector<std::shared_ptr<Observer>>::iterator it = observers.begin(); it != observers.end(); it++)
-    {
-        (*it)->update();
-    }
-}

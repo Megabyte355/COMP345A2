@@ -9,12 +9,14 @@
 #define MAPVIEW_H_
 
 #include "Observer.h"
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
+#include "TileOption.h"
+#include "Map.h"
 #include <iostream>
 #include "TextRenderer.h"
 #include "TextureRenderer.h"
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
 
 class MapView : public Observer
 {
@@ -24,7 +26,8 @@ class MapView : public Observer
         ~MapView() override;
 
         void update() override;
-        bool initialize();
+        bool initialize(Map * model);
+        void run();
 
     private:
         // Constant configurations
@@ -34,11 +37,17 @@ class MapView : public Observer
 
         int screenWidth;
         int screenHeight;
+        bool isRunning;
 
         SDL_Renderer * renderer;
         SDL_Window * window;
-        //TextureRenderer textures;
-        //TextRenderer texts;
+        TextureRenderer texture;
+        TextRenderer text;
+        std::vector<Clickable*> clickables;
+        Map * mapModel;
+
+        void handleEvents(SDL_Event&);
+        void loadViewComponents();
 };
 
 #endif /* MAPVIEW_H_ */
