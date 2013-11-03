@@ -1,17 +1,25 @@
 //============================================================================
 // Name        : COMP345A2.cpp
 // Author      : Gary Chang
-// Version     :
-// Copyright   : Free Software
-// Description : Hello World in C++, Ansi-style
+// Version     : 1.0
+// Description : Program Driver for Assignment 2
 //============================================================================
 
 #include <iostream>
+#include <memory>
 #include "Map.h"
+#include "MapView.h"
 
-
-int main()
+int main(int argc, char** argv)
 {
+
+    // Initialization
+    Map mapModel(20,20);
+    std::shared_ptr<MapView> mapView = std::make_shared<MapView>();
+    mapModel.attach(mapView);
+
+    mapView->initialize();
+
 //    cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!;
 //
 //    Map m;

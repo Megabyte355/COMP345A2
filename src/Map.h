@@ -18,6 +18,7 @@ class Map: public Observable
 {
     public:
         Map();
+        Map(int, int);
         ~Map();
 
         void initialize(int, int);
@@ -49,8 +50,6 @@ class Map: public Observable
         void attach(std::shared_ptr<Observer>) override;
         void detach(std::shared_ptr<Observer>) override;
         void notify() override;
-
-        void printMap();
 
     private:
         // Map variables

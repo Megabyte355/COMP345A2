@@ -12,6 +12,11 @@ Map::Map()
     initialize(10, 10);
 }
 
+Map::Map(int width, int height)
+{
+    initialize(width, height);
+}
+
 Map::~Map()
 {
 }
@@ -29,8 +34,6 @@ void Map::initialize(int width, int height)
             matrix[i][j] = std::make_shared<Cell>(i, j);
         }
     }
-
-    notify();
 }
 
 int Map::getWidth()
@@ -183,68 +186,6 @@ bool Map::isOccupiable(CellLocation loc)
     return temp != nullptr && temp->isOccupiable();
 }
 
-void Map::printMap()
-{
-    std::cout << "   ";
-    for (int k = 0; k < mapWidth; k++)
-    {
-        std::cout << k << "  ";
-    }
-    std::cout << std::endl;
-    for (int j = 0; j < mapHeight; j++)
-    {
-        std::cout << j << " ";
-        for (int i = 0; i < mapWidth; i++)
-        {
-            Cell currentCell = *matrix[i][j];
-            if (currentCell.getType() == Cell::CellType::Surface)
-            {
-                if (currentCell.getOccupant() != nullptr)
-                {
-                    CellOccupant::OccupantType type = currentCell.getOccupant()->getType();
-                    if (type == CellOccupant::OccupantType::Item)
-                    {
-                        std::cout << " I ";
-                    }
-                    else if (type == CellOccupant::OccupantType::Player)
-                    {
-                        std::cout << " P ";
-                    }
-                    else if (type == CellOccupant::OccupantType::Monster)
-                    {
-                        std::cout << " M ";
-                    }
-                    else
-                    {
-                        std::cout << " ? ";
-                    }
-                }
-                else
-                {
-                    std::cout << " _ ";
-                }
-            }
-            else if (currentCell.getType() == Cell::CellType::Wall)
-            {
-                std::cout << " X ";
-            }
-            else if (currentCell.getType() == Cell::CellType::Start)
-            {
-                std::cout << " S ";
-            }
-            else if (currentCell.getType() == Cell::CellType::End)
-            {
-                std::cout << " E ";
-            }
-            else
-            {
-                std::cout << "   ";
-            }
-        }
-        std::cout << std::endl;
-    }
-}
-
 void Map::attach(std::shared_ptr<Observer> obs)
 {
     observers.push_back(obs);
@@ -254,7 +195,7 @@ void Map::detach(std::shared_ptr<Observer> obs)
 {
     for (std::vector<std::shared_ptr<Observer>>::iterator it = observers.begin(); it != observers.end(); it++)
     {
-        if((*it)->getSubscriberID() == obs->getSubscriberID())
+        if ((*it)->getSubscriberID() == obs->getSubscriberID())
         {
             observers.erase(it);
             break;
