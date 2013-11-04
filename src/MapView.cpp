@@ -16,6 +16,8 @@ MapView::MapView()
     renderer = nullptr;
     window = nullptr;
     mapModel = nullptr;
+    selectedOption = Cell::CellType::Empty;
+    clickables = new std::vector<Clickable*>();
 }
 
 MapView::MapView(int screenWidth, int screenHeight)
@@ -26,6 +28,8 @@ MapView::MapView(int screenWidth, int screenHeight)
     renderer = nullptr;
     window = nullptr;
     mapModel = nullptr;
+    selectedOption = Cell::CellType::Empty;
+    clickables = new std::vector<Clickable*>();
 }
 
 MapView::~MapView()
@@ -33,11 +37,14 @@ MapView::~MapView()
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    renderer = nullptr;
-    window = nullptr;
-
+    clickables->clear();
+    delete clickables;
+    
     // Map is destroyed outside of this class
     mapModel = nullptr;
+    renderer = nullptr;
+    window = nullptr;
+    clickables = nullptr;
 }
 
 bool MapView::initialize(Map * model)
@@ -83,17 +90,23 @@ void MapView::loadViewComponents()
     int offset = 75;
     int n = 0;
 
-    TileOption * wallOption = new TileOption(Cell::CellType::Wall, renderer, &texture, &text, screenWidth - 200, 100 + offset * n++, 200, 50);
-    TileOption * floorOption = new TileOption(Cell::CellType::Surface, renderer, &texture, &text, screenWidth - 200, 100 + offset * n++, 200, 50);
-    TileOption * startOption = new TileOption(Cell::CellType::Start, renderer, &texture, &text, screenWidth - 200, 100 + offset * n++, 200, 50);
-    TileOption * endOption = new TileOption(Cell::CellType::End, renderer, &texture, &text, screenWidth - 200, 100 + offset * n++, 200, 50);
-    TileOption * emptyOption = new TileOption(Cell::CellType::Empty, renderer, &texture, &text, screenWidth - 200, 100 + offset * n++, 200, 50);
+    TileOption * wallOption = new TileOption(Cell::CellType::Wall, screenWidth - 200, 100 + offset * n++, 200, 50);
+    TileOption * floorOption = new TileOption(Cell::CellType::Surface, screenWidth - 200, 100 + offset * n++, 200, 50);
+    TileOption * startOption = new TileOption(Cell::CellType::Start, screenWidth - 200, 100 + offset * n++, 200, 50);
+    TileOption * endOption = new TileOption(Cell::CellType::End, screenWidth - 200, 100 + offset * n++, 200, 50);
+    TileOption * emptyOption = new TileOption(Cell::CellType::Empty, screenWidth - 200, 100 + offset * n++, 200, 50);
 
-    clickables.push_back(wallOption);
-    clickables.push_back(floorOption);
-    clickables.push_back(startOption);
-    clickables.push_back(endOption);
-    clickables.push_back(emptyOption);
+    wallOption->setRenderers(renderer, &texture, &text);
+    floorOption->setRenderers(renderer, &texture, &text);
+    startOption->setRenderers(renderer, &texture, &text);
+    endOption->setRenderers(renderer, &texture, &text);
+    emptyOption->setRenderers(renderer, &texture, &text);
+
+    clickables->push_back(wallOption);
+    clickables->push_back(floorOption);
+    clickables->push_back(startOption);
+    clickables->push_back(endOption);
+    clickables->push_back(emptyOption);
 
     // Attach to observable
     wallOption->attach(std::make_shared<MapView>(*this));
@@ -108,15 +121,31 @@ void MapView::loadViewComponents()
     endOption = nullptr;
     emptyOption = nullptr;
 
-
     // ==================================================== Map tiles ====================================================
     int mapColumns = mapModel->getWidth();
     int mapRows = mapModel->getHeight();
 
-    int tileTextureWidth = 400/mapColumns;
-    int tileTextureHeight = 400/mapRows;
+    int tileTextureWidth = 400 / mapColumns;
+    int tileTextureHeight = 400 / mapRows;
 
+    int currentX = 25;
+    int currentY = 125;
 
+    MapTile * mt = nullptr;
+    for (int i = 0; i < mapColumns; i++)
+    {
+        for (int j = 0; j < mapRows; j++)
+        {
+            mt = new MapTile(mapModel, i, j, currentX, currentY, tileTextureWidth, tileTextureHeight);
+            mt->setRenderers(renderer, &texture, &text);
+            clickables->push_back(mt);
+            mt->attach(std::make_shared<MapView>(*this));
+            mt = nullptr;
+            currentY += tileTextureHeight;
+        }
+        currentX += tileTextureWidth;
+        currentY = 125;
+    }
 }
 
 void MapView::update()
@@ -133,25 +162,28 @@ void MapView::update()
     text.renderText(10, 60, "COMP345 - Assignment 2: Observer Pattern", "arial_bold", text.white, 15);
     text.renderText(10, 80, "Gary Chang (9368841)", "arial_bold", text.white, 15);
 
-    // Draw tile options
+    // Draw tile options and map tiles
     text.renderText(screenWidth - 300, 25, "Tile selection (click)", "calibri_bold", text.white, 35);
-    for (auto c : clickables)
+    for (Clickable * c : *clickables)
     {
+        // Update selectedOption variable to selected cell type
+//        TileOption * to = dynamic_cast<TileOption*>(c);
+//        if (to != nullptr && to->isClicked())
+//        {
+//            selectedOption = to->getCellType();
+//        }
+//        to = nullptr;
         c->draw();
     }
 
-
-    // Draw map tiles
-
-    texture.drawTexture("bricks",30, 120, 400, 400);
-
+    text.renderText(screenWidth - 250, screenHeight - 50, "Selected: " + selectedOptionStr(), "calibri", text.white, 25);
 
     SDL_RenderPresent(renderer);
 }
 
 void MapView::run()
 {
-    // Render graphics once
+// Render graphics once
     update();
 
     isRunning = true;
@@ -183,21 +215,48 @@ void MapView::handleEvents(SDL_Event &event)
         case SDL_KEYUP:
             break;
         case SDL_MOUSEBUTTONDOWN:
-            for (auto c : clickables)
+            for (auto c : *clickables)
             {
-                c->handleEvents(event);
+                c->handleEvents(event, &selectedOption);
             }
             break;
         case SDL_MOUSEBUTTONUP:
-            for (auto c : clickables)
+            for (auto c : *clickables)
             {
-                c->handleEvents(event);
+                c->handleEvents(event, &selectedOption);
             }
-            break;
-        case SDL_MOUSEMOTION:
-            std::cout << "Motion at : (" << event.button.x << ", " << event.button.y << ")" << std::endl;
             break;
         default:
             break;
     }
+}
+
+std::string MapView::selectedOptionStr()
+{
+    std::string s = "";
+    if (selectedOption == Cell::CellType::Wall)
+    {
+        s = "wall";
+    }
+    else if (selectedOption == Cell::CellType::Surface)
+    {
+        s = "floor";
+    }
+    else if (selectedOption == Cell::CellType::Start)
+    {
+        s = "start";
+    }
+    else if (selectedOption == Cell::CellType::End)
+    {
+        s = "end";
+    }
+    else if (selectedOption == Cell::CellType::Empty)
+    {
+        s = "empty";
+    }
+    else
+    {
+        s = "???";
+    }
+    return s;
 }

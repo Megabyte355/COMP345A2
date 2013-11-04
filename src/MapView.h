@@ -11,6 +11,7 @@
 #include "Observer.h"
 #include "TileOption.h"
 #include "Map.h"
+#include "MapTile.h"
 #include <iostream>
 #include "TextRenderer.h"
 #include "TextureRenderer.h"
@@ -43,11 +44,14 @@ class MapView : public Observer
         SDL_Window * window;
         TextureRenderer texture;
         TextRenderer text;
-        std::vector<Clickable*> clickables;
         Map * mapModel;
+        Cell::CellType selectedOption;
+        std::vector<Clickable*> * clickables;
 
         void handleEvents(SDL_Event&);
         void loadViewComponents();
+        void drawAll();
+        std::string selectedOptionStr();
 };
 
 #endif /* MAPVIEW_H_ */

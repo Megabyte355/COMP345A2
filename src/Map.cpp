@@ -87,15 +87,22 @@ std::shared_ptr<Cell> Map::getEndCell()
 
 void Map::setCell(Cell::CellType cellType, int x, int y)
 {
-    if (isValidCell(x, y))
+    if (cellType == Cell::CellType::Start)
     {
-        matrix[x][y].reset();
-        matrix[x][y] = std::make_shared<Cell>(cellType, x, y);
+        setStartCell(x,y);
+    }
+    else if(cellType == Cell::CellType::End)
+    {
+        setEndCell(x,y);
+    }
+    else if (isValidCell(x, y))
+    {
+        matrix[x][y]->setType(cellType);
         matrix[x][y]->setX(x);
         matrix[x][y]->setY(y);
+        
+        notify();
     }
-
-    notify();
 }
 
 void Map::setStartCell(int x, int y)
@@ -106,8 +113,8 @@ void Map::setStartCell(int x, int y)
         {
             getStartCell()->setType(Cell::CellType::Surface);
         }
-        matrix[x][y].reset();
-        matrix[x][y] = std::make_shared<Cell>(Cell::CellType::Start, x, y);
+
+        matrix[x][y]->setType(Cell::CellType::Start);
         matrix[x][y]->setX(x);
         matrix[x][y]->setY(y);
 
@@ -123,8 +130,7 @@ void Map::setEndCell(int x, int y)
         {
             getEndCell()->setType(Cell::CellType::Surface);
         }
-        matrix[x][y].reset();
-        matrix[x][y] = std::make_shared<Cell>(Cell::CellType::End, x, y);
+        matrix[x][y]->setType(Cell::CellType::End);
         matrix[x][y]->setX(x);
         matrix[x][y]->setY(y);
 
@@ -185,5 +191,3 @@ bool Map::isOccupiable(CellLocation loc)
     std::shared_ptr<Cell> temp = getCell(loc.x, loc.y);
     return temp != nullptr && temp->isOccupiable();
 }
-
-

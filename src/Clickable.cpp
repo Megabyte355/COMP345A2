@@ -14,23 +14,38 @@ Clickable::Clickable()
     width = 0;
     height = 0;
     renderer = nullptr;
-    texture=nullptr;
+    texture = nullptr;
     text = nullptr;
+    click = false;
 }
 
-Clickable::Clickable(SDL_Renderer* ren, TextureRenderer * tr, TextRenderer * t, int x, int y, int w, int h)
+Clickable::Clickable(int x, int y, int w, int h)
 {
     this->x = x;
     this->y = y;
     width = w;
     height = h;
-    renderer = ren;
-    texture = tr;
-    text = t;
+    renderer = nullptr;
+    texture = nullptr;
+    text = nullptr;
+    click = false;
 }
 
 Clickable::~Clickable()
 {
     // This class is not the main owner of the renderer. It won't be destroyed here.
+    observers.clear();
     renderer = nullptr;
+}
+
+void Clickable::setRenderers(SDL_Renderer * ren, TextureRenderer * texture, TextRenderer * text)
+{
+    this->renderer = ren;
+    this->texture = texture;
+    this->text = text;
+}
+
+bool Clickable::isClicked()
+{
+    return click;
 }

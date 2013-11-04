@@ -14,10 +14,6 @@ Observer::Observer()
     observerID = observerIDtracker++;
 }
 
-Observer::~Observer()
-{
-}
-
 long Observer::getSubscriberID()
 {
     return observerID;

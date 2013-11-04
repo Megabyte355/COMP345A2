@@ -12,15 +12,18 @@
 #include "TextureRenderer.h"
 #include "TextRenderer.h"
 #include "Observable.h"
+#include "Cell.h"
 
 class Clickable : public Observable
 {
     public:
-        Clickable(SDL_Renderer *, TextureRenderer *, TextRenderer *, int, int, int, int);
-        virtual ~Clickable();
+        Clickable(int, int, int, int);
+        virtual ~Clickable() override;
 
-        virtual void handleEvents(SDL_Event &) = 0;
+        void setRenderers(SDL_Renderer *, TextureRenderer *, TextRenderer *);
+        virtual void handleEvents(SDL_Event &, Cell::CellType *) = 0;
         virtual void draw() = 0;
+        bool isClicked();
 
     protected:
         Clickable();
@@ -37,6 +40,9 @@ class Clickable : public Observable
         SDL_Renderer * renderer;
         TextureRenderer * texture;
         TextRenderer * text;
+
+        // variables used for updating
+        bool click;
 };
 
 #endif /* CLICKABLE_H_ */

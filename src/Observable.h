@@ -22,7 +22,7 @@ class Observable
         void detach(std::shared_ptr<Observer>);
         void notify();
 
-    private:
+    protected:
         // IObserver variables
         std::vector<std::shared_ptr<Observer>> observers;
 };

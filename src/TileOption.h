@@ -18,15 +18,15 @@
 class TileOption: public Clickable
 {
     public:
-        TileOption(Cell::CellType, SDL_Renderer *, TextureRenderer *, TextRenderer *, int, int, int, int);
+        TileOption(Cell::CellType, int, int, int, int);
         ~TileOption() override;
-        void handleEvents(SDL_Event &) override;
+
+        Cell::CellType getCellType();
+        void handleEvents(SDL_Event &, Cell::CellType *) override;
         void draw() override;
-        bool isClicked();
 
     private:
-        Cell::CellType type;
-        bool click;
+        Cell::CellType myType;
 };
 
 #endif /* TILEOPTION_H_ */
