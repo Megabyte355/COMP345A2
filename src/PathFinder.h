@@ -26,7 +26,6 @@ class PathFinder
         static bool vectorContains(const std::vector<PathUnit>&, PathUnit&);
         static std::vector<PathUnit> filterPath(std::vector<PathUnit>&, Cell&, Cell&, int estinationDepth);
         static std::vector<CellLocation> convertPathUnitsToCellLocations(std::vector<PathUnit> &list);
-
 };
 
 #endif /* PATHFINDER_H_ */

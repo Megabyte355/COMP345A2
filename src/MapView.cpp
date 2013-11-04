@@ -40,7 +40,7 @@ MapView::~MapView()
     clickables->clear();
     delete clickables;
     
-    // Map is destroyed outside of this class
+    // mapModel is destroyed outside of this class
     mapModel = nullptr;
     renderer = nullptr;
     window = nullptr;
@@ -147,7 +147,7 @@ void MapView::loadViewComponents()
         currentY = 125;
     }
 
-    // ==================================================== Buttons ====================================================
+    // ==================================================== Button(s) ====================================================
     Button * validateButton = new Button(screenWidth - 300, screenHeight - 50, 300, 50);
     validateButton->setRenderers(renderer, &texture, &text);
     clickables->push_back(validateButton);
@@ -158,7 +158,7 @@ void MapView::loadViewComponents()
 
 void MapView::update()
 {
-    std::cout << "update() function is called via Observer Pattern!!!" << std::endl;
+    // update() function is called via Observer Pattern!!!
 
     SDL_RenderClear(renderer);
 
@@ -174,27 +174,25 @@ void MapView::update()
     text.renderText(screenWidth - 300, 25, "Tile selection (click)", "calibri_bold", text.white, 35);
     for (Clickable * c : *clickables)
     {
-        // Update selectedOption variable to selected cell type
-//        TileOption * to = dynamic_cast<TileOption*>(c);
-//        if (to != nullptr && to->isClicked())
-//        {
-//            selectedOption = to->getCellType();
-//        }
-//        to = nullptr;
+        // If validate map button is clicked, check if the map is valid and display the result
         Button * b = dynamic_cast<Button*>(c);
         if (b != nullptr && b->isClicked())
         {
+            std::cout << "Validating map... ";
             bool validMap = mapModel->validateMap();
             if (validMap)
             {
+                // Green text
                 text.renderText(25, screenHeight - 50, "Map is VALID", "calibri_bold", text.green, 40);
+                std::cout << "Done!" << std::endl;
             }
             else
             {
+                // Red text
                 text.renderText(25, screenHeight - 50, "Map is INVALID", "calibri_bold", text.red, 40);
             }
         }
-
+        // Draw current clickable object
         c->draw();
     }
 
@@ -203,7 +201,7 @@ void MapView::update()
 
 void MapView::run()
 {
-// Render graphics once
+    // Render graphics once at the beginning
     update();
 
     isRunning = true;
@@ -249,34 +247,4 @@ void MapView::handleEvents(SDL_Event &event)
         default:
             break;
     }
-}
-
-std::string MapView::selectedOptionStr()
-{
-    std::string s = "";
-    if (selectedOption == Cell::CellType::Wall)
-    {
-        s = "wall";
-    }
-    else if (selectedOption == Cell::CellType::Surface)
-    {
-        s = "floor";
-    }
-    else if (selectedOption == Cell::CellType::Start)
-    {
-        s = "start";
-    }
-    else if (selectedOption == Cell::CellType::End)
-    {
-        s = "end";
-    }
-    else if (selectedOption == Cell::CellType::Empty)
-    {
-        s = "empty";
-    }
-    else
-    {
-        s = "???";
-    }
-    return s;
 }

@@ -23,7 +23,6 @@ class CellLocation
         bool operator==(const CellLocation &);
         bool isNeighbor(const CellLocation &);
         std::vector<CellLocation> getNeighborLocations();
-
 };
 
 #endif /* CELLLOCATION_H_ */

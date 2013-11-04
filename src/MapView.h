@@ -32,7 +32,7 @@ class MapView : public Observer
         void run();
 
     private:
-        // Constant configurations
+        // Window properties
         static const int SCREEN_WIDTH = 800;
         static const int SCREEN_HEIGHT = 600;
         std::string WINDOW_NAME;
@@ -41,10 +41,12 @@ class MapView : public Observer
         int screenHeight;
         bool isRunning;
 
+        // Graphics related
         SDL_Renderer * renderer;
         SDL_Window * window;
         TextureRenderer texture;
         TextRenderer text;
+
         Map * mapModel;
         Cell::CellType selectedOption;
         std::vector<Clickable*> * clickables;
@@ -52,7 +54,6 @@ class MapView : public Observer
         void handleEvents(SDL_Event&);
         void loadViewComponents();
         void drawAll();
-        std::string selectedOptionStr();
 };
 
 #endif /* MAPVIEW_H_ */

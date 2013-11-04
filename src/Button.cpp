@@ -39,6 +39,8 @@ void Button::handleEvents(SDL_Event &event, Cell::CellType* option)
 void Button::draw()
 {
     texture->drawTexture("empty", x, y, 300, 50);
+
+    // Draws string with a shadow
     text->renderText(x + 17, y + 17, "Click here to validate map", "calibri_bold", text->black, 25);
     text->renderText(x + 15, y + 15, "Click here to validate map", "calibri_bold", text->white, 25);
 }

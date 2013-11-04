@@ -23,6 +23,7 @@ Map::~Map()
 
 void Map::initialize(int width, int height)
 {
+    // Sets the size of the map and initializes all cells
     mapWidth = width;
     mapHeight = height;
     matrix.resize(mapWidth);
@@ -109,6 +110,7 @@ void Map::setStartCell(int x, int y)
 {
     if (isValidCell(x, y))
     {
+        // Check if start cell already exists
         if (getStartCell() != nullptr)
         {
             getStartCell()->setType(Cell::CellType::Surface);
@@ -126,6 +128,7 @@ void Map::setEndCell(int x, int y)
 {
     if (isValidCell(x, y))
     {
+        // Check if end cell already exists
         if (getEndCell() != nullptr)
         {
             getEndCell()->setType(Cell::CellType::Surface);
@@ -153,10 +156,22 @@ bool Map::validateMap()
     bool hasEnd = end != nullptr;
     bool hasValidPath = false;
 
-    if (hasStart && hasEnd)
+    if (!hasStart)
+    {
+        std::cout << "Start point is missing!" << std::endl;
+    }
+    else if (!hasEnd)
+    {
+        std::cout << "End point is missing!" << std::endl;
+    }
+    else
     {
         shortestPath = PathFinder::getShortestPath(*this, *start, *end);
         hasValidPath = !(shortestPath.empty());
+        if(!hasValidPath)
+        {
+            std::cout << "There is no path from Start to End!" << std::endl;
+        }
     }
     return hasStart && hasEnd && hasValidPath;
 }

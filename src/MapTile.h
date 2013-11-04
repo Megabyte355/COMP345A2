@@ -21,10 +21,10 @@ class MapTile: public Clickable
         void draw() override;
 
     private:
-        std::shared_ptr<Cell> cell;
-        Map * mapModel;
         int i;
         int j;
+        std::shared_ptr<Cell> cell;
+        Map * mapModel;
 };
 
 #endif /* MAPTILE_H_ */

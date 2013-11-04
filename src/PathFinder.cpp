@@ -92,6 +92,7 @@ std::vector<PathUnit> PathFinder::filterPath(std::vector<PathUnit> &list, Cell &
     {
         for (PathUnit p : list)
         {
+            // Find the first neighbor with depth = targetDepth
             if (p.depth == targetDepth && p.isNeighbor(current))
             {
                 filteredPath.push_back(p);

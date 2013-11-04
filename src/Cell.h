@@ -35,10 +35,10 @@ class Cell
         std::shared_ptr<CellOccupant> getOccupant();
         void setOccupant(std::shared_ptr<CellOccupant>);
         CellLocation getLocation();
-
-        // Operations
-        void clearOccupant();
         std::vector<CellLocation> getNeighbors();
+
+        // Other functions
+        void clearOccupant();
         bool isOccupiable();
 
     private:

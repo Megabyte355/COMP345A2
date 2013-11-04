@@ -33,12 +33,11 @@ class TextRenderer
         SDL_Color blue;
 
     private:
+        static const int DEFAULT_FONT_SIZE = 20;
         SDL_Renderer* renderer;
-        
         std::map<std::string, std::string> fontMap;
 
         TTF_Font* loadPath(const std::string &file);
-        static const int DEFAULT_FONT_SIZE = 20;
 };
 
 #endif /* TEXTRENDERER_H_ */

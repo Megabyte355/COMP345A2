@@ -15,11 +15,11 @@ TextureRenderer::TextureRenderer()
 TextureRenderer::~TextureRenderer()
 {
     // Note: This class is not the main owner of "renderer".
-    //for (auto t : textureMap)
-    //{
-    //    SDL_DestroyTexture(t.second);
-    //    std::cout << "Texture " << t.first.c_str() << " destroyed" << std::endl;
-    //}
+    for (auto t : textureMap)
+    {
+        SDL_DestroyTexture(t.second);
+        std::cout << "Texture " << t.first.c_str() << " destroyed" << std::endl;
+    }
     textureMap.clear();
     renderer = nullptr;
 }

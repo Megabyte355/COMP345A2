@@ -9,6 +9,7 @@
 
 TextRenderer::TextRenderer()
 {
+    // Initialize preset colors
     black.r = 0;
     white.r = 255;
     red.r = 255;

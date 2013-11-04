@@ -21,9 +21,9 @@ class Clickable : public Observable
         virtual ~Clickable() override;
 
         void setRenderers(SDL_Renderer *, TextureRenderer *, TextRenderer *);
+        bool isClicked();
         virtual void handleEvents(SDL_Event &, Cell::CellType *) = 0;
         virtual void draw() = 0;
-        bool isClicked();
 
     protected:
         Clickable();

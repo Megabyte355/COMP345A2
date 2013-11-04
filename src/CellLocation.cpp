@@ -46,17 +46,10 @@ bool CellLocation::isNeighbor(const CellLocation &other)
 
 std::vector<CellLocation> CellLocation::getNeighborLocations()
 {
-//    CellLocation up(x, y - 1);
-//    CellLocation down(x, y + 1);
-//    CellLocation left(x - 1, y);
-//    CellLocation right(x + 1, y);
-
     std::vector<CellLocation> v;
     v.push_back(CellLocation(x, y - 1));
     v.push_back(CellLocation(x, y + 1));
     v.push_back(CellLocation(x - 1, y));
     v.push_back(CellLocation(x + 1, y));
-
     return v;
-//    return {up, down, left, right};
 }

@@ -41,8 +41,6 @@ void MapTile::handleEvents(SDL_Event &event, Cell::CellType * option)
         if (clickX >= x && clickY >= y && clickX <= (x + width) && clickY <= (y + height))
         {
             mapModel->setCell(*option, i, j);
-            // test
-            //cell->setType(*option);
             click = true;
             notify();
         }
