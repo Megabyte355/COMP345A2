@@ -12,9 +12,10 @@
 #include "TileOption.h"
 #include "Map.h"
 #include "MapTile.h"
-#include <iostream>
 #include "TextRenderer.h"
 #include "TextureRenderer.h"
+#include "Button.h"
+#include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>

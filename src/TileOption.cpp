@@ -11,7 +11,6 @@ TileOption::TileOption(Cell::CellType type, int x, int y, int w, int h) :
         Clickable(x, y, w, h)
 {
     this->myType = type;
-    click = false;
 }
 
 TileOption::~TileOption()

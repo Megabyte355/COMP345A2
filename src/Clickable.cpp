@@ -47,5 +47,7 @@ void Clickable::setRenderers(SDL_Renderer * ren, TextureRenderer * texture, Text
 
 bool Clickable::isClicked()
 {
-    return click;
+    bool copy = click;
+    click = false;
+    return copy;
 }

@@ -146,6 +146,14 @@ void MapView::loadViewComponents()
         currentX += tileTextureWidth;
         currentY = 125;
     }
+
+    // ==================================================== Buttons ====================================================
+    Button * validateButton = new Button(screenWidth - 300, screenHeight - 50, 300, 50);
+    validateButton->setRenderers(renderer, &texture, &text);
+    clickables->push_back(validateButton);
+    validateButton->attach(std::make_shared<MapView>(*this));
+    validateButton = nullptr;
+
 }
 
 void MapView::update()
@@ -173,10 +181,22 @@ void MapView::update()
 //            selectedOption = to->getCellType();
 //        }
 //        to = nullptr;
+        Button * b = dynamic_cast<Button*>(c);
+        if (b != nullptr && b->isClicked())
+        {
+            bool validMap = mapModel->validateMap();
+            if (validMap)
+            {
+                text.renderText(25, screenHeight - 50, "Map is VALID", "calibri_bold", text.green, 40);
+            }
+            else
+            {
+                text.renderText(25, screenHeight - 50, "Map is INVALID", "calibri_bold", text.red, 40);
+            }
+        }
+
         c->draw();
     }
-
-    text.renderText(screenWidth - 250, screenHeight - 50, "Selected: " + selectedOptionStr(), "calibri", text.white, 25);
 
     SDL_RenderPresent(renderer);
 }
