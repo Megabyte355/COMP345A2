@@ -37,6 +37,10 @@ MapView::~MapView()
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+    for (auto c : *clickables)
+    {
+        c->detach(this);
+    }
     clickables->clear();
     delete clickables;
     
@@ -109,11 +113,11 @@ void MapView::loadViewComponents()
     clickables->push_back(emptyOption);
 
     // Attach to observable
-    wallOption->attach(std::make_shared<MapView>(*this));
-    floorOption->attach(std::make_shared<MapView>(*this));
-    startOption->attach(std::make_shared<MapView>(*this));
-    endOption->attach(std::make_shared<MapView>(*this));
-    emptyOption->attach(std::make_shared<MapView>(*this));
+    wallOption->attach(this);
+    floorOption->attach(this);
+    startOption->attach(this);
+    endOption->attach(this);
+    emptyOption->attach(this);
 
     wallOption = nullptr;
     floorOption = nullptr;
@@ -139,7 +143,7 @@ void MapView::loadViewComponents()
             mt = new MapTile(mapModel, i, j, currentX, currentY, tileTextureWidth, tileTextureHeight);
             mt->setRenderers(renderer, &texture, &text);
             clickables->push_back(mt);
-            mt->attach(std::make_shared<MapView>(*this));
+            mt->attach(this);
             mt = nullptr;
             currentY += tileTextureHeight;
         }
@@ -151,9 +155,8 @@ void MapView::loadViewComponents()
     Button * validateButton = new Button(screenWidth - 300, screenHeight - 50, 300, 50);
     validateButton->setRenderers(renderer, &texture, &text);
     clickables->push_back(validateButton);
-    validateButton->attach(std::make_shared<MapView>(*this));
+    validateButton->attach(this);
     validateButton = nullptr;
-
 }
 
 void MapView::update()
@@ -172,6 +175,7 @@ void MapView::update()
 
     // Draw tile options and map tiles
     text.renderText(screenWidth - 300, 25, "Tile selection (click)", "calibri_bold", text.white, 35);
+    std::vector<CellLocation> validPath;
     for (Clickable * c : *clickables)
     {
         // If validate map button is clicked, check if the map is valid and display the result
@@ -179,6 +183,7 @@ void MapView::update()
         if (b != nullptr && b->isClicked())
         {
             std::cout << "Validating map... ";
+            validPath = mapModel->getStartToEndPath();
             bool validMap = mapModel->validateMap();
             if (validMap)
             {
@@ -194,6 +199,24 @@ void MapView::update()
         }
         // Draw current clickable object
         c->draw();
+    }
+
+    // Draw path if map is valid
+    if (!validPath.empty())
+    {
+        // Certainly, the path vector has at least 2 elements
+        for(unsigned int i = 1; i < validPath.size() - 1; i++)
+        {
+            for(auto c : *clickables)
+            {
+                MapTile * mt = dynamic_cast<MapTile*>(c);
+                if (mt != nullptr && (mt->i == validPath[i].x) && (mt->j == validPath[i].y))
+                {
+                    // Draw the path
+                    texture.drawTexture("dot",mt->x, mt->y, mt->width, mt->height);
+                }
+            }
+        }
     }
 
     SDL_RenderPresent(renderer);

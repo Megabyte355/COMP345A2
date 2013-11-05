@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 {
     // Initialization
     Map mapModel(20,20);
-    std::shared_ptr<MapView> mapView = std::make_shared<MapView>();
+    MapView * mapView = new MapView();
     mapModel.attach(mapView);
 
     // Execution
@@ -22,5 +22,9 @@ int main(int argc, char** argv)
     {
         mapView->run();
     }
+
+    // Clean up
+    mapModel.detach(mapView);
+    delete mapView;
     return 0;
 }

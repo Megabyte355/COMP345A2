@@ -45,6 +45,7 @@ class Map: public Observable
 
         // Path calculation
         std::vector<CellLocation> getShortestPath(Cell&, Cell&);
+        std::vector<CellLocation> getStartToEndPath();
 
     private:
         // Map variables

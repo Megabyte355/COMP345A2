@@ -39,6 +39,7 @@ void TextureRenderer::loadAllTextures()
     textureMap["stop"] = loadTexture("assets/stop.png");
     textureMap["finish"] = loadTexture("assets/finish.png");
     textureMap["empty"] = loadTexture("assets/empty.png");
+    textureMap["dot"] = loadTexture("assets/dot.png");
 }
 
 SDL_Texture* TextureRenderer::getTexture(std::string textureName)

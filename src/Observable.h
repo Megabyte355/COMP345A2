@@ -11,6 +11,7 @@
 #include "Observer.h"
 #include <memory>
 #include <vector>
+#include <iostream>
 
 class Observable
 {
@@ -18,13 +19,13 @@ class Observable
         Observable() {}
         virtual ~Observable() {}
 
-        void attach(std::shared_ptr<Observer>);
-        void detach(std::shared_ptr<Observer>);
+        void attach(Observer*);
+        void detach(Observer*);
         void notify();
 
     protected:
         // IObserver variables
-        std::vector<std::shared_ptr<Observer>> observers;
+        std::vector<Observer*> observers;
 };
 
 #endif /* IOBSERVABLE_H_ */

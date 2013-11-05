@@ -186,6 +186,16 @@ std::vector<CellLocation> Map::getShortestPath(Cell &origin, Cell &dest)
     return PathFinder::getShortestPath(*this, origin, dest);
 }
 
+std::vector<CellLocation> Map::getStartToEndPath()
+{
+    std::vector<CellLocation> path;
+    if(getStartCell() != nullptr && getEndCell() != nullptr)
+    {
+        path = PathFinder::getShortestPath(*this,*getStartCell(),*getEndCell());
+    }
+    return path;
+}
+
 bool Map::isValidCell(Cell c)
 {
     return isValidCell(c.getX(), c.getY());

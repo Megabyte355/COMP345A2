@@ -17,6 +17,14 @@
 class Clickable : public Observable
 {
     public:
+        // Location on screen
+        int x;
+        int y;
+
+        // Space occupied on screen
+        int width;
+        int height;
+
         Clickable(int, int, int, int);
         virtual ~Clickable() override;
 
@@ -27,14 +35,6 @@ class Clickable : public Observable
 
     protected:
         Clickable();
-
-        // Location on screen
-        int x;
-        int y;
-
-        // Space occupied on screen
-        int width;
-        int height;
 
         // Renderer used to draw graphics
         SDL_Renderer * renderer;
