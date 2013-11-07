@@ -7,10 +7,14 @@
 
 #include "Observable.h"
 
+long Observable::attachments = 0;
+
 void Observable::attach(Observer * obs)
 {
     observers.push_back(obs);
-    std::cout << "Observer attached." << std::endl;
+    attachmentID = attachments++;
+    std::cout << "Observable #" << attachmentID << " attached." << std::endl;
+
 }
 
 void Observable::detach(Observer * obs)
@@ -20,7 +24,7 @@ void Observable::detach(Observer * obs)
         if ((*it)->getSubscriberID() == obs->getSubscriberID())
         {
             observers.erase(it);
-            std::cout << "Observer detached." << std::endl;
+            std::cout << "Observable #" << attachmentID << " detached." << std::endl;
             break;
         }
     }
@@ -28,6 +32,7 @@ void Observable::detach(Observer * obs)
 
 void Observable::notify()
 {
+    std::cout << "Observable #" << attachmentID << " calling notify()." << std::endl;
     for (std::vector<Observer*>::iterator it = observers.begin(); it != observers.end(); it++)
     {
         (*it)->update();

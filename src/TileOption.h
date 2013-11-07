@@ -15,7 +15,7 @@
 #include <string>
 #include <SDL.h>
 
-class TileOption: public Clickable
+class TileOption: public virtual Clickable
 {
     public:
         TileOption(Cell::CellType, int, int, int, int);

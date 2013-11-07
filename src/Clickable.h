@@ -14,7 +14,7 @@
 #include "Observable.h"
 #include "Cell.h"
 
-class Clickable : public Observable
+class Clickable : public virtual Observable
 {
     public:
         // Location on screen

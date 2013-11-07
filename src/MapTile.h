@@ -12,7 +12,7 @@
 #include "Clickable.h"
 #include "Map.h"
 
-class MapTile: public Clickable
+class MapTile: public virtual Clickable
 {
     public:
         // Index of cell on mapModel

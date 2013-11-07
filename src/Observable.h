@@ -23,6 +23,9 @@ class Observable
         void detach(Observer*);
         void notify();
 
+        static long attachments;
+        long attachmentID;
+
     protected:
         // IObserver variables
         std::vector<Observer*> observers;
